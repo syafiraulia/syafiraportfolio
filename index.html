@@ -158,6 +158,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 #cta .hl{left:-3px;top:-10px;bottom:0}#cta .hr{right:-3px;top:0;bottom:-10px}
 #cta .hl::before,#cta .hr::after{content:"";position:absolute;left:50%;width:11px;height:11px;margin-left:-5.5px;border-radius:50%;background:#0A63FF}
 #cta .hl::before{top:-6px}#cta .hr::after{bottom:-6px}
+/* pencari warna (gaya kotak deteksi) */
+.swt.on b{text-decoration:underline;text-underline-offset:4px}.swt.on .chip{outline:2px solid #57F538;outline-offset:6px}
+.pf{margin:36px 0 0 clamp(0px,14vw,210px);max-width:820px}.pfh{font-size:12px;letter-spacing:.08em;color:var(--muted);margin:0 0 14px}.pfh b{color:#0b1a07;background:#57F538;padding:1px 6px;font-weight:600}
+.pfw{display:flex;flex-wrap:wrap;gap:12px 14px;margin:0 0 40px}.pfw button{position:relative;width:54px;height:54px;border:0;padding:0;cursor:pointer;border-radius:3px;box-shadow:0 10px 12px -10px rgba(0,0,0,.25);transition:transform .2s}.pfw button:hover{transform:translateY(-3px)}.pfw button.on{outline:2px solid #57F538;outline-offset:4px}.pfw span{position:absolute;left:0;top:100%;margin-top:7px;font-size:9px;letter-spacing:.06em;color:var(--muted);white-space:nowrap}
+.pfs{position:relative;overflow:hidden;background:var(--mist)}.pfs>img{display:block;width:100%;height:100%;object-fit:fill}
+.pfs svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.pfs path{stroke:#57F538;stroke-width:1.5;fill:none}
+.pff{position:absolute;border:1.5px solid #57F538;pointer-events:none}
+.pff i,.pfc i,.pfk{font:700 10px/16px "Instrument Sans",sans-serif;font-style:normal;letter-spacing:.06em;color:#0b1a07;background:#57F538;padding:0 6px;white-space:nowrap}
+.pff i{position:absolute;left:-1.5px;bottom:100%}.pfc{position:absolute;border:1.5px solid #57F538;background:#57F538}.pfc i{display:block;overflow:hidden;text-overflow:ellipsis}.pfc canvas{display:block;width:100%;height:auto}
+.pfk{position:absolute;left:10px;bottom:10px;max-width:60%;overflow:hidden;text-overflow:ellipsis}
+.pft{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.pft button{position:relative;width:58px;height:58px;padding:0;border:1.5px solid transparent;background:var(--mist);cursor:pointer;overflow:hidden}.pft button.on{border-color:#57F538}.pft img{width:100%;height:100%;object-fit:cover}.pft small{position:absolute;right:0;bottom:0;background:#57F538;color:#0b1a07;font-size:9px;padding:0 3px}
 </style>
 
 </head><body>
@@ -242,7 +253,7 @@ function renderBrand(){let b=$('#brand');if(!b){b=document.createElement('div');
  const pet='<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2C20 6 22 16 12 22C2 16 4 6 12 2Z" fill="var(--blossom)"/></svg>';
  const sw=Object.keys(CL).map(k=>{const h=S.colors[k],n=parseInt(h.slice(1),16),r=n>>16,g=(n>>8)&255,bl=n&255,lt=(r*.3+g*.6+bl*.1)>240;
   return '<div class="swt"><button class="chip" data-h="'+h+'" title="Klik untuk menyalin" style="'+(lt?'border:1px solid var(--ink);background:transparent':'background:'+h)+'">'+fish(lt)+'</button><b>'+h.toUpperCase()+'</b><small>RGB '+r+' '+g+' '+bl+'</small></div>'}).join('');
- b.innerHTML='<div class="sec"><span>2.</span> Font</div><div class="fonts"><div>'+pet+'<span style="font-family:Hanken Grotesk,sans-serif;font-weight:600">Hanken Grotesk Semibold</span></div><div>'+pet+'<span style="font-family:Instrument Sans,sans-serif;font-weight:500">Instrument Sans Medium</span></div></div><div class="sec"><span>3.</span> Palet warna <small style="color:var(--muted)">— klik untuk menyalin kode</small></div><div class="swg">'+sw+'</div><div class="end"><a class="pill" href="#karya">'+esc(S.cta)+'</a></div>'}
+ b.innerHTML='<div class="sec"><span>2.</span> Font</div><div class="fonts"><div>'+pet+'<span style="font-family:Hanken Grotesk,sans-serif;font-weight:600">Hanken Grotesk Semibold</span></div><div>'+pet+'<span style="font-family:Instrument Sans,sans-serif;font-weight:500">Instrument Sans Medium</span></div></div><div class="sec"><span>3.</span> Palet warna <small style="color:var(--muted)">— klik untuk menyalin kode &amp; melihat karyanya</small></div><div class="swg">'+sw+'</div><div class="pf" id="pf"><p class="pfh">Memindai warna dari karya…</p></div><div class="end"><a class="pill" href="#karya">'+esc(S.cta)+'</a></div>';pfRe()}
 function renderText(){
  $('#nm').textContent=S.name;$('#rl').textContent=S.role;
  $('#cta').innerHTML='<i class="hl"></i><span></span><i class="hr"></i>';$('#cta span').textContent=S.cta;
@@ -367,7 +378,7 @@ $('#landing').addEventListener('click',e=>{const c=e.target.closest('.chip');if(
 const RS=[[250,1.25],[200,.8],[310,1],[230,1.3],[270,.9]],RP={flat:{p:90,r:0,c:1,D:1e9},tilt:{p:60,r:0,c:1.15,D:1100},ring:{p:38,r:-16,c:1,D:1100}};
 let RL=[],RV=0,RO=0,RW=0,RH=0,RN=1,RMODE='ring',rd=null,rdm=0,rls=0,rmx=.5,rmy=.5,rsx=.5,rsy=.5,RU=100,RC=0,RT=0,RCV=0,RSV=0,RFREE=0,RCS=0,RCI=-1,RLT=0,RAC=0,RSTEP=100,RDX=-99,RDY=-99,RWT=0;
 function buildReel(){const tr=$('#rtrack');if(!tr)return;tr.innerHTML='';RL=[];const src=[];
- S.items.forEach((it,i)=>{src.push({s:it.icon,t:it.label,c1:it.c1,c2:it.c2,i:i});(it.blocks||[]).filter(b=>b.k==='img').forEach(b=>src.push({s:b.src,t:it.label,i:i}))});
+ S.items.forEach((it,i)=>{(it.blocks||[]).filter(b=>b.k==='img').forEach(b=>src.push({s:b.src,t:it.label,i:i}))});
  if(!src.length)return;RN=src.length;const n=Math.max(12,src.length);
  for(let j=0;j<n;j++){const d=src[j%src.length],z=RS[j%RS.length],b=document.createElement('button');
   b.className='ri';b.dataset.i=d.i;b.setAttribute('aria-label','Buka: '+d.t);
@@ -417,6 +428,54 @@ addEventListener('keydown',e=>{if(RMODE!=='cover'||(e.key!=='ArrowRight'&&e.key!
  $('#rtrack').addEventListener('click',e=>{const b=e.target.closest('.ri');if(!b||rdm>6)return;if(RMODE==='cover'){const o=RL.find(x=>x.e===b);if(o&&Math.abs(o.d)>.5){RT=Math.round(RC+o.d);return}}const i=+b.dataset.i;location.hash='#karya';setTimeout(()=>{if(S.items[i])openWin(S.items[i],null)},150)});
  rls=scrollY;addEventListener('scroll',()=>{const d=scrollY-rls;rls=scrollY;RV+=Math.max(-40,Math.min(40,d))*.0009});
  (function lp(){reelFrame();requestAnimationFrame(lp)})()})();
+
+/* pencari warna: gambar mana yang memakai warna palet (gaya kotak deteksi) */
+var pfSel='',pfC={},pfI=0,pfL=[];
+var pfW=[],pfWN=0;
+function pfRe(){pfBuild()}
+function pfPal(os){const B={};os.forEach(o=>{if(!o)return;for(let p=0;p<o.d.length;p+=4){if(o.d[p+3]<128)continue;const r=o.d[p],g=o.d[p+1],b=o.d[p+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mn>235)continue;const k=(r>>4)<<8|(g>>4)<<4|(b>>4),e=B[k]||(B[k]=[0,0,0,0,0]);e[0]+=.4+(mx-mn)/255;e[1]+=r;e[2]+=g;e[3]+=b;e[4]++}});
+ const L=Object.values(B).map(e=>({w:e[0],c:[e[1]/e[4],e[2]/e[4],e[3]/e[4]]})).sort((a,b)=>b.w-a.w),out=[];
+ for(const x of L){if(out.length>=10)break;if(out.every(y=>(x.c[0]-y[0])**2+(x.c[1]-y[1])**2+(x.c[2]-y[2])**2>3600))out.push(x.c)}
+ return out.map(c=>'#'+c.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase())}
+function swHTML(h){const n=parseInt(h.slice(1),16),r=n>>16,g=(n>>8)&255,b=n&255,lt=(r*.3+g*.6+b*.1)>240;return'<div class="swt"><button class="chip" data-h="'+h+'" title="Klik untuk menyalin" style="'+(lt?'border:1px solid var(--ink);background:transparent':'background:'+h)+'"><svg viewBox="0 0 64 28" width="46" height="20"><path d="M2 14C14 2 34 2 46 12L62 3V25L46 16C34 26 14 26 2 14Z" '+(lt?'fill="none" stroke="var(--ink)" stroke-width="1"':'fill="#fff"')+'/></svg></button><b>'+h+'</b><small>RGB '+r+' '+g+' '+b+'</small></div>'}
+function pfSw(){const g=$('#brand .swg');if(g)g.innerHTML=pfW.map(swHTML).join('')}
+async function pfBuild(){const box=$('#pf');if(!box)return;const hint='<div class="pfm"><p class="pfh">Klik salah satu warna di atas untuk melihat karya yang memakainya.</p></div>';
+ if(pfW.length){pfSw();box.innerHTML=hint}else{const g=$('#brand .swg');if(g)g.innerHTML='';box.innerHTML='<div class="pfm"><p class="pfh">Memindai warna dari karya…</p></div>'}
+ const src=pfSrc(),os=await Promise.all(src.map(s=>pfScan(s[0])));
+ if(!pfW.length||pfWN!==src.length){pfW=pfPal(os);pfWN=src.length}
+ if(!pfW.length){const g=$('#brand .swg');if(g)g.innerHTML=Object.keys(CL).map(k=>swHTML(S.colors[k])).join('');box.innerHTML='';return}
+ pfSw();box.innerHTML=hint;if(pfSel&&pfW.includes(pfSel))pfSelect(pfSel,1)}
+function pfSrc(){const m=new Map();S.items.forEach(it=>{(it.blocks||[]).filter(b=>b.k==='img').map(b=>b.src).forEach(u=>{if(u&&!m.has(u))m.set(u,it.label)})});return[...m]}
+function pfScan(u){return pfC[u]||(pfC[u]=new Promise(res=>{const im=new Image();im.onload=()=>{try{const r=Math.min(1,64/Math.max(im.naturalWidth,im.naturalHeight)),w=Math.max(1,Math.round(im.naturalWidth*r)),h=Math.max(1,Math.round(im.naturalHeight*r)),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0,w,h);res({im,w,h,d:x.getImageData(0,0,w,h).data})}catch(e){res(null)}};im.onerror=()=>res(null);im.src=u}))}
+function pfFind(o,hex){const n=parseInt(hex.slice(1),16),R=n>>16,G=(n>>8)&255,B=n&255,T=40,W=o.w,H=o.h,m=new Uint8Array(W*H);let c=0,t=0;
+ for(let k=0;k<W*H;k++){const p=k*4;if(o.d[p+3]<128)continue;t++;const a=o.d[p]-R,b=o.d[p+1]-G,d=o.d[p+2]-B;if(a*a+b*b+d*d<T*T){m[k]=1;c++}}
+ if(!t||c/t<.02||c<8)return null;
+ const D=new Uint8Array(W*H);for(let k=0;k<W*H;k++)if(m[k]){const x=k%W,y=(k/W)|0;for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const u=x+i,v=y+j;if(u>=0&&u<W&&v>=0&&v<H)D[v*W+u]=1}}
+ const seen=new Uint8Array(W*H);let best=null;
+ for(let s0=0;s0<W*H;s0++){if(!D[s0]||seen[s0])continue;const st=[s0];seen[s0]=1;let n2=0,x0=W,x1=0,y0=H,y1=0;
+  while(st.length){const k=st.pop(),x=k%W,y=(k/W)|0;if(m[k]){n2++;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+   for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const u=x+i,v=y+j;if(u<0||u>=W||v<0||v>=H)continue;const q=v*W+u;if(D[q]&&!seen[q]){seen[q]=1;st.push(q)}}}
+  if(!best||n2>best.n)best={n:n2,x0,x1,y0,y1}}
+ const w=Math.max(.12,(best.x1-best.x0+1)/W),h=Math.max(.12,(best.y1-best.y0+1)/H);
+ return{p:c/t,x:Math.min(best.x0/W,1-w),y:Math.min(best.y0/H,1-h),w,h}}
+async function pfSelect(h,keep){pfSel=h;const box=$('#pf .pfm');if(!box)return;document.querySelectorAll('#brand .swt').forEach(e=>e.classList.toggle('on',e.querySelector('.chip').dataset.h===h));
+ box.innerHTML='<p class="pfh">Memindai warna '+esc(h.toUpperCase())+'…</p>';if(!keep)box.scrollIntoView({behavior:'smooth',block:'nearest'});
+ const src=pfSrc(),os=await Promise.all(src.map(s=>pfScan(s[0])));if(pfSel!==h)return;
+ pfL=[];os.forEach((o,i)=>{if(!o)return;const f=pfFind(o,h);if(f)pfL.push({u:src[i][0],t:src[i][1],o,f})});
+ pfL.sort((a,b)=>b.f.p-a.f.p);pfL=pfL.slice(0,8);pfI=0;pfDraw()}
+function pfDraw(){const box=$('#pf .pfm'),h=pfSel.toUpperCase();if(!box)return;
+ if(!pfL.length){box.innerHTML='<p class="pfh">Belum ada karya yang memakai warna '+esc(h)+'. Coba warna lain.</p>';return}
+ const a=pfL[pfI],ar=a.o.im.naturalWidth/a.o.im.naturalHeight;
+ box.innerHTML='<p class="pfh"><b>'+esc(h)+'</b> &nbsp;ditemukan di '+pfL.length+' karya</p><div class="pfs" style="aspect-ratio:'+ar+';width:min(100%,'+Math.round(ar*68)+'vh)"><img alt=""><svg><path/></svg><div class="pff"><i>'+esc(h)+'</i></div><div class="pfc"><i>'+esc(h)+' · '+Math.round(a.f.p*100)+'%</i></div><div class="pfk">KARYA: '+esc(String(a.t||'').toUpperCase())+'</div></div><div class="pft">'+pfL.map((x,i)=>'<button data-i="'+i+'" class="'+(i===pfI?'on':'')+'" aria-label="Karya '+(i+1)+'"><img alt=""><small>'+Math.round(x.f.p*100)+'%</small></button>').join('')+'</div>';
+ box.querySelector('.pfs>img').src=a.u;box.querySelectorAll('.pft img').forEach((m,i)=>{m.src=pfL[i].u});requestAnimationFrame(()=>pfLay(a))}
+function pfLay(a){const s=$('#pf .pfs');if(!s)return;const W=s.clientWidth,H=s.clientHeight,f=a.f,fx=f.x*W,fy=f.y*H,fw=f.w*W,fh=f.h*H,fr=s.querySelector('.pff'),cd=s.querySelector('.pfc');
+ fr.style.cssText='left:'+fx+'px;top:'+fy+'px;width:'+fw+'px;height:'+fh+'px';if(fy<18)fr.firstChild.style.cssText='bottom:auto;top:0';
+ const ch=Math.round(Math.min(Math.min(W*.3,190)*fh/fw,H*.3)),cw=Math.round(ch*fw/fh),right=fx+fw/2<W/2,cx=right?W-cw-10:10,above=fy+fh/2>=H/2,cy=above?10:H-ch-26;
+ cd.style.cssText='left:'+cx+'px;top:'+cy+'px;width:'+cw+'px';cd.querySelectorAll('canvas').forEach(c=>c.remove());
+ const cv=document.createElement('canvas'),iw=a.o.im.naturalWidth,ih=a.o.im.naturalHeight;cv.width=cw*2;cv.height=ch*2;cv.getContext('2d').drawImage(a.o.im,f.x*iw,f.y*ih,f.w*iw,f.h*ih,0,0,cv.width,cv.height);cd.appendChild(cv);
+ const sx=fx+fw/2,sy=above?fy:fy+fh,ey=cy+(ch+16)/2,ex=right?cx:cx+cw,sv=s.querySelector('svg');sv.setAttribute('viewBox','0 0 '+W+' '+H);sv.firstChild.setAttribute('d','M'+sx+' '+sy+'V'+ey+'H'+ex)}
+$('#landing').addEventListener('click',e=>{const t=e.target.closest('.pft button');if(t){pfI=+t.dataset.i;pfDraw();return}const c=e.target.closest('#brand .chip');if(c)pfSelect(c.dataset.h)});
+addEventListener('resize',()=>{if(pfL.length&&$('#pf .pfs'))requestAnimationFrame(()=>pfLay(pfL[pfI]))});
 
 /* routing */
 function route(){const g=location.hash==='#karya';$('#landing').classList.toggle('on',!g);$('#gallery').classList.toggle('on',g);scrollTo(0,0);if(!g){requestAnimationFrame(()=>{drawMt();initP();layoutWords()})}}
